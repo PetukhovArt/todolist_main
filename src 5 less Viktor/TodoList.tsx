@@ -9,11 +9,13 @@ type TodoListPropsType = {
     title: string
     filter: FilterValuesType
     tasks: TaskType[]
+
+    removeTask: (taskId: string, todoListId: string) => void
+    addTask: (title: string,todoListId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean,todoListId: string) => void
+
     changeFilterValue: (filter: FilterValuesType,todoListId: string) => void
-    removeTask: (taskId: string,todoListId:string) => void
-    addTask: (title: string,todoListId:string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean,todoListId:string) => void
-    removeTodoList: (todoListId:string)=> void
+    removeTodoList: (todoListId: string)=> void
 }
 
 export type TaskType = {
@@ -27,7 +29,15 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     const [error, setError] = useState<boolean>(false)
     const maxLengthUserMessage: number = 15
     const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
-
+    // const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
+    // console.log(addTaskInput)
+    // const addTask = () => {
+    //     if(addTaskInput.current){
+    //         props.addTask(addTaskInput.current.value)
+    //         addTaskInput.current.value = ""
+    //     }
+    //
+    // }
     const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>)=>{
         error && setError(false)
         setTitle(e.currentTarget.value)
@@ -43,7 +53,9 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     }
     const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>)=> e.key === "Enter" && addTask()
 
-    const handlerCreator = (filter: FilterValuesType):() => void => (): void => props.changeFilterValue(filter,props.todoListId)
+    const handlerCreator = (filter: FilterValuesType):() => void => (): void => props.changeFilterValue(filter, props.todoListId)
+    // returns callback
+    const removeTodoList = ()=> props.removeTodoList(props.todoListId)
 
 
     const inputErrorClasses = error || isUserMessageToLong ? "input-error" : ""
@@ -52,9 +64,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     const isAddBtnDisabled = title.length === 0
     return (
         <div className={"todolist"}>
-            <h3>
-                {props.title}
-                <button onClick={()=>{props.removeTodoList(props.todoListId)}}>x</button>
+            <h3>{props.title}
+                <button onClick={removeTodoList}>x</button>
             </h3>
             <div>
                 {/*<input ref={addTaskInput}/>*/}
