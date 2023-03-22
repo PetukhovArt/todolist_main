@@ -1,45 +1,49 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
+
+
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
 export function AddItemForm(props: AddItemFormPropsType) {
-    const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
-    const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false)
+
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
+
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
-    const maxLengthUserMessage: number = 15
-    const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
-    const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addTask()
-    const inputErrorClasses = error || isUserMessageToLong ? 'input-error' : ''
-    const userMaxLengthMessage = isUserMessageToLong && <div style={{color: 'hotpink'}}>Task title is to long!</div>
-    const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required!</div>
-    const isAddBtnDisabled = title.length === 0
 
-    const addTask = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addItem(trimmedTitle)
-        } else {
-            setError(true)
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addItem();
         }
-        setTitle('')
     }
-    return (
-        <div>
-            <input
-                value={title}
-                placeholder="Please, enter title"
-                onChange={changeLocalTitle}
-                onKeyDown={onKeyDownAddTask}
-                className={inputErrorClasses}
-            />
-            <button disabled={isAddBtnDisabled} onClick={addTask}>+</button>
-            {userMaxLengthMessage}
-            {userErrorMessage}
-        </div>
-    )
+
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
 }

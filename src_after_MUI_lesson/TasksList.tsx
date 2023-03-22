@@ -1,13 +1,20 @@
 import React, {ChangeEvent, FC} from 'react';
 import {TaskType} from './TodoList';
 import {EditableSpan} from './EditableSpan';
+import {Checkbox, IconButton, List, ListItem} from '@mui/material';
+import {CheckBox, HighlightOff} from '@mui/icons-material';
+
 
 type TasksListPropsType = {
     todoListId: string
     tasks: TaskType[]
     removeTask: (taskId: string, todoListId: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
-    changeTaskTitle: (taskId: string, newValue: string,todoListId:string) => void
+    changeTaskTitle: (taskId: string, newValue: string, todoListId: string) => void
+}
+
+function HighlightOffIcon() {
+    return null;
 }
 
 export const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
@@ -23,9 +30,11 @@ export const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
 
 
                 return (
-                    <li key={task.id}>
-                        <input
-                            type="checkbox"
+                    <ListItem disablePadding={true}
+                              divider={true}
+                        key={task.id}>
+                        <Checkbox //input
+                            size='small'
                             checked={task.isDone}
                             onChange={changeTaskStatusHandler}
                         />
@@ -33,15 +42,21 @@ export const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
                                       isDone={task.isDone}
                                       onChange={changeTaskTitleHandler}
                         />
-                        <button onClick={removeTaskHandler}>x</button>
-                    </li>
+                        <IconButton size="small"
+                                    onClick={removeTaskHandler}
+                                    color="primary"
+                        >
+                            <HighlightOff/>
+                        </IconButton>
+                    </ListItem>
                 )
             })
             : <span>Your taskslist is empty</span>
     return (
-        <ul>
+        <List disablePadding={false}
+        >
             {tasksItems}
-        </ul>
+        </List>
     );
 };
 

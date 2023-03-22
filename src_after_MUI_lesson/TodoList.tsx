@@ -1,8 +1,12 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import Button from '@mui/material/Button';
 import {TasksList} from './TasksList';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
+import {IconButton, Paper} from '@mui/material';
+import {HighlightOff} from '@mui/icons-material';
+
 
 type TodoListPropsType = {
     todoListId: string
@@ -34,12 +38,17 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         props.changeTodoListTitle(props.todoListId, newTitle)
     }
 
-
     return (
         <div className={"todolist"}>
             <h3>
                 <EditableSpan title={props.title} isDone={false} onChange={changeTodoListTitle} />
-                <button onClick={()=>{props.removeTodoList(props.todoListId)}}>x</button>
+                <IconButton size="small"
+                            onClick={()=>{props.removeTodoList(props.todoListId)}}
+                            color="secondary"
+                >
+                    <HighlightOff/>
+                </IconButton>
+
             </h3>
             <AddItemForm  addItem={addTask}/>
             <TasksList
@@ -50,18 +59,21 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                 changeTaskTitle={props.changeTaskTitle}
             />
             <div className="filter-btn-container">
-                <button
-                    className={props.filter ==="all" ? "active-filter-btn" : "filter-btn"}
+                <Button size="small" variant="contained"
+                        color={props.filter ==="all" ? "secondary" : "primary"}
+                    // className={props.filter ==="all" ? "active-filter-btn" : "filter-btn"}
                     onClick={handlerCreator("all")}
-                >All</button>
-                <button
-                    className={props.filter ==="active" ? "active-filter-btn" : "filter-btn"}
+                >All</Button>
+                <Button size="small" variant="contained"
+                        color={props.filter ==="active" ? "secondary" : "primary"}
+                    // className={props.filter ==="active" ? "active-filter-btn" : "filter-btn"}
                     onClick={handlerCreator("active")}
-                >Active</button>
-                <button
-                    className={props.filter ==="completed" ? "active-filter-btn" : "filter-btn"}
+                >Active</Button>
+                <Button size="small" variant="contained"
+                        color={props.filter ==="completed" ? "secondary" : "primary"}
+                    // className={props.filter ==="completed" ? "active-filter-btn" : "filter-btn"}
                     onClick={handlerCreator("completed")}
-                >Completed</button>
+                >Completed</Button>
             </div>
         </div>
     );
