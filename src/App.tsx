@@ -3,8 +3,8 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import AppBar from '@mui/material/AppBar/AppBar';
-import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
+import IconButton from "@mui/material/IconButton/IconButton";
 import {Menu} from "@mui/icons-material";
 
 
@@ -49,6 +49,7 @@ function App() {
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         setTasks({...tasks});
     }
+
     function addTask(title: string, todolistId: string) {
         let task = {id: v1(), title: title, isDone: false};
         //достанем нужный массив по todolistId:
@@ -58,6 +59,7 @@ function App() {
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         setTasks({...tasks});
     }
+
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
         //достанем нужный массив по todolistId:
         let todolistTasks = tasks[todolistId];
@@ -70,6 +72,7 @@ function App() {
             setTasks({...tasks});
         }
     }
+
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
         //достанем нужный массив по todolistId:
         let todolistTasks = tasks[todolistId];
@@ -82,6 +85,8 @@ function App() {
             setTasks({...tasks});
         }
     }
+
+
     function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(tl => tl.id === todolistId);
         if (todolist) {
@@ -89,6 +94,7 @@ function App() {
             setTodolists([...todolists])
         }
     }
+
     function removeTodolist(id: string) {
         // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
         setTodolists(todolists.filter(tl => tl.id != id));
@@ -97,6 +103,7 @@ function App() {
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         setTasks({...tasks});
     }
+
     function changeTodolistTitle(id: string, title: string) {
         // найдём нужный todolist
         const todolist = todolists.find(tl => tl.id === id);
@@ -106,6 +113,7 @@ function App() {
             setTodolists([...todolists]);
         }
     }
+
     function addTodolist(title: string) {
         let newTodolistId = v1();
         let newTodolist: TodolistType = {id: newTodolistId, title: title, filter: 'all'};
@@ -152,14 +160,14 @@ function App() {
                                         key={tl.id}
                                         id={tl.id}
                                         title={tl.title}
-                                        tasks={tasksForTodolist}
-                                        removeTask={removeTask}
+                                        // tasks={tasksForTodolist}
+                                        // removeTask={removeTask}
                                         changeFilter={changeFilter}
-                                        addTask={addTask}
-                                        changeTaskStatus={changeStatus}
+                                        // addTask={addTask}
+                                        // changeTaskStatus={changeStatus}
                                         filter={tl.filter}
                                         removeTodolist={removeTodolist}
-                                        changeTaskTitle={changeTaskTitle}
+                                        // changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>
