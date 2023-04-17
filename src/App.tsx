@@ -3,8 +3,7 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import {AppBar, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
-import IconButton from "@mui/material/IconButton/IconButton";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 
 
@@ -21,6 +20,7 @@ export type TasksStateType = {
 
 
 function App() {
+
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -39,7 +39,6 @@ function App() {
             {id: v1(), title: "React Book", isDone: true}
         ]
     });
-
 
     function removeTask(id: string, todolistId: string) {
         //достанем нужный массив по todolistId:
@@ -85,7 +84,6 @@ function App() {
             setTasks({...tasks});
         }
     }
-
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(tl => tl.id === todolistId);
@@ -160,14 +158,14 @@ function App() {
                                         key={tl.id}
                                         id={tl.id}
                                         title={tl.title}
-                                        // tasks={tasksForTodolist}
-                                        // removeTask={removeTask}
+                                        tasks={tasksForTodolist}
+                                        removeTask={removeTask}
                                         changeFilter={changeFilter}
-                                        // addTask={addTask}
-                                        // changeTaskStatus={changeStatus}
+                                        addTask={addTask}
+                                        changeTaskStatus={changeStatus}
                                         filter={tl.filter}
                                         removeTodolist={removeTodolist}
-                                        // changeTaskTitle={changeTaskTitle}
+                                        changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>
