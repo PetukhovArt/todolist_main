@@ -61,7 +61,8 @@ export const Todolist = React.memo((props: PropsType) => {
         <div>
             {
                 tasksForTodolist.map(t =>
-                    <Task key={t.id}
+                    <Task
+                        key={t.id}
                           changeTaskTitle={props.changeTaskTitle}
                           changeTaskStatus={props.changeTaskStatus}
                           removeTask={props.removeTask}
@@ -101,10 +102,12 @@ export const Task = React.memo((props: TaskPropsType) => {
     const onClickHandler = useCallback(() => {
         props.removeTask(props.task.id, props.todolistId)
     },[props.task.id,props.todolistId])
+
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
         props.changeTaskStatus(props.task.id, newIsDoneValue, props.todolistId);
     },[props.changeTaskStatus, props.task.id, props.todolistId])
+
     const onTitleChangeHandler = useCallback((newValue: string) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId);
     },[props.changeTaskTitle,props.task.id,props.todolistId])

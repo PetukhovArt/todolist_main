@@ -1,22 +1,35 @@
+import type {Meta, StoryObj} from '@storybook/react';
+import {Button} from './Button';
+import {AddItemForm, AddItemFormPropsType} from '../AddItemForm';
+import {ChangeEvent, useState} from 'react';
 import TextField from '@mui/material/TextField/TextField';
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {IconButton} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
 
-export type AddItemFormPropsType = {
-    addItem: (title: string) => void
-}
+const meta: Meta<typeof AddItemForm> = {
+    title: 'TODOLIST/AddItemForm',
+    component: AddItemForm,
+    tags: ['autodocs'],
+    argTypes: { // описываем пропсы которые заданы не явно (со знаком?)
+        addItem: {
+            description: 'Button clicked inside form',
+            action: 'AddItemForm clicked with Value'
+        }
+    },
+};
+export default meta;
 
-export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
+type Story = StoryObj<typeof Button>;
 
-    console.log('AddItemForm render')
+export const AddItemFormStory: Story = {};
+export const AddItemFormWithErrorStory = (args: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState('')
-    let [error, setError] = useState<string | null>(null)
+    let [error, setError] = useState<string | null>('Title is required')
 
     const addItem = () => {
         if (title.trim() !== '') {
-            props.addItem(title);
+            args.addItem(title);
             setTitle('');
         } else {
             setError('Title is required');
@@ -27,9 +40,9 @@ export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
         setTitle(e.currentTarget.value)
     }
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
         if (error !== null) {
-            setError(null)
+            setError(null);
         }
         if (e.charCode === 13) {
             addItem();
@@ -49,4 +62,5 @@ export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
             <AddBox/>
         </IconButton>
     </div>
-})
+};
+
