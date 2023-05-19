@@ -1,11 +1,12 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios'
+import {isNumber} from 'util';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
-    headers: {
-        'API-KEY': '5e6ef100-8143-4a2b-9ce9-13ce8d825d16'
-    }
+    // headers: {
+    //     'API-KEY': '5e6ef100-8143-4a2b-9ce9-13ce8d825d16'
+    // }
 })
 
 // API
@@ -25,10 +26,10 @@ export const todolistsAPI = {
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
-    deleteTask(taskId: string,todolistId: string ) {
+    deleteTask(taskId: string, todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
-    createTask(title: string, todolistId: string ) {
+    createTask(title: string, todolistId: string) {
         return instance.post<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType<{ item: TaskType }>>, { title: string }>(`todo-lists/${todolistId}/tasks`, {title});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
@@ -36,7 +37,31 @@ export const todolistsAPI = {
     }
 }
 
+export const authAPI = {
+    login(formikValues: LoginParamsType) {
+        return instance.post<ResponseType<{data: number}>>('auth/login', {
+            email: formikValues.email,
+            password: formikValues.password
+        })
+    },
+    me() {
+        return instance.get<ResponseType<UserType>>('auth/me')
+    }
+}
+
 // TYPES =============================
+export type UserType = {
+    id: number
+    email: string
+    login: string
+}
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: boolean
+}
+
 export type TodolistType = {
     id: string
     title: string
@@ -49,12 +74,14 @@ export type ResponseType<D = {}> = {
     fieldsErrors: Array<string>
     data: D
 }
+
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
     Completed = 2,
     Draft = 3
 }
+
 export enum TaskPriorities {
     Low = 0,
     Middle = 1,
@@ -62,6 +89,7 @@ export enum TaskPriorities {
     Urgently = 3,
     Later = 4
 }
+
 export type TaskType = {
     description: string
     title: string
