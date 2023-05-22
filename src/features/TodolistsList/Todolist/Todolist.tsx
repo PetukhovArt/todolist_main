@@ -7,14 +7,14 @@ import { Delete } from '@mui/icons-material';
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {FilterValuesType} from '../todolists-reducer'
-import {fetchTasksTC} from '../tasks-reducer';
+import {fetchTasksTC, TaskDomainType} from '../tasks-reducer';
 import {useAppDispatch} from '../../../app/store';
 import {RequestStatusType} from '../../../app/app-reducer';
 
 type PropsType = {
     id: string
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
@@ -24,7 +24,6 @@ type PropsType = {
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
     entityStatus: RequestStatusType
-
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
@@ -62,18 +61,20 @@ export const Todolist = React.memo(function (props: PropsType) {
     }
 
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+        <h3>
+            <EditableSpan value={props.title} onChange={changeTodolistTitle} disabled={props.entityStatus==='loading'}/>
             <IconButton onClick={removeTodolist} disabled={props.entityStatus==='loading'}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask} disabled={props.entityStatus==='loading'}/>
+        <AddItemForm addItem={addTask} entityStatus={props.entityStatus}/>
         <div>
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
                                           removeTask={props.removeTask}
                                           changeTaskTitle={props.changeTaskTitle}
                                           changeTaskStatus={props.changeTaskStatus}
+                                                taskEntityStatus={t.taskEntityStatus}
                     />)
             }
         </div>

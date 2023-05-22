@@ -6,7 +6,7 @@ import {addTaskAC} from '../TodolistsList/tasks-reducer';
 import {Navigate} from 'react-router-dom';
 
 const initialState = {
-    isLoggedIn: false
+    isLoggedIn: true
 }
 type InitialStateType = typeof initialState
 
