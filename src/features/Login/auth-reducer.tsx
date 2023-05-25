@@ -4,13 +4,14 @@ import {setErrorAC, setRequestStatusAC} from '../../app/app-reducer';
 import {authAPI, LoginParamsType, todolistsAPI} from '../../api/todolists-api';
 import {addTaskAC} from '../TodolistsList/tasks-reducer';
 import {Navigate} from 'react-router-dom';
+import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
-const initialState = {
-    isLoggedIn: true
+const authInitialState = {
+    isLoggedIn: false
 }
-type InitialStateType = typeof initialState
+type InitialStateType = typeof authInitialState
 
-export const authReducer = (state: InitialStateType = initialState, action: RootActionsType): InitialStateType => {
+export const authReducer = (state: InitialStateType = authInitialState, action: RootActionsType): InitialStateType => {
     switch (action.type) {
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
@@ -31,36 +32,28 @@ export const loginTC = (formikValues: LoginParamsType) => async (dispatch: Dispa
                 dispatch(setIsLoggedInAC(true));
                 dispatch(setRequestStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-                    dispatch(setErrorAC(res.data.messages[0]));
-                } else {
-                    dispatch(setErrorAC('Some error occurred'));
-                }
-                dispatch(setRequestStatusAC('failed'))
+                handleServerAppError(res.data, dispatch)
             }
-        } catch (error) {
-            dispatch(setRequestStatusAC('failed'))
-            dispatch(setErrorAC(error as any))
+        } catch (e) {
+            handleServerNetworkError((e as any).message,dispatch)
         }
+}
+
+export const logoutTC = () => async (dispatch: Dispatch<RootActionsType>) => {
+    dispatch(setRequestStatusAC('loading'))
+    try {
+        const res = await authAPI.logout()
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC(false));
+            dispatch(setRequestStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError((e as any).message,dispatch)
+    }
 }
 
 // types
 export type AuthActionsType = ReturnType<typeof setIsLoggedInAC>
 
-
-
-// export const loginTC = (data: any) => async (dispatch: Dispatch<ActionsType>) => {
-//     dispatch(setAppStatusAC('loading'))
-//
-//     try {
-//         const response = await authAPI.login(data)
-//         if (response.data.resultCode === 0) {
-//             dispatch(setIsLoggedInAC(true))
-//             dispatch(setAppStatusAC('succeeded'))
-//         } else {
-//             handleServerAppError(response.data, dispatch);
-//         }
-//     } catch (e) {
-//         handleServerNetworkError((e as any).message, dispatch);
-//     }
-// }
