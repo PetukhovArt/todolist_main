@@ -5,6 +5,7 @@ import {authAPI, LoginParamsType, todolistsAPI} from '../../api/todolists-api';
 import {addTaskAC} from '../TodolistsList/tasks-reducer';
 import {Navigate} from 'react-router-dom';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {clearTodosDataAC} from '../TodolistsList/todolists-reducer';
 
 const authInitialState = {
     isLoggedIn: false
@@ -46,6 +47,7 @@ export const logoutTC = () => async (dispatch: Dispatch<RootActionsType>) => {
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedInAC(false));
             dispatch(setRequestStatusAC('succeeded'))
+            dispatch(clearTodosDataAC()) //зачищение данных
         } else {
             handleServerAppError(res.data, dispatch)
         }

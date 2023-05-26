@@ -5,11 +5,12 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 import {Task} from './Task/Task'
-import {TaskStatuses, TaskType} from '../../../api/todolists-api'
+import {TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api'
 import {FilterValuesType} from '../todolists-reducer'
 import {fetchTasksTC, TaskDomainType} from '../tasks-reducer';
-import {useAppDispatch} from '../../../app/store';
+import {RootActionsType, useAppDispatch} from '../../../app/store';
 import {RequestStatusType} from '../../../app/app-reducer';
+import {Dispatch} from 'redux';
 
 type PropsType = {
     id: string
@@ -29,11 +30,11 @@ type PropsType = {
 export const Todolist = React.memo(function (props: PropsType) {
 
 
-    const dispatch=useAppDispatch()
+    // const dispatch=useAppDispatch()
 
-    useEffect(() => {
-        dispatch(fetchTasksTC(props.id))
-    }, []);
+    // useEffect(() => {
+    //     dispatch(fetchTasksTC(props.id))
+    // }, []);
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)

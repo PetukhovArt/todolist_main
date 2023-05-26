@@ -1,8 +1,8 @@
 import {todolistsAPI, TodolistType} from '../../api/todolists-api'
 import {Dispatch} from 'redux';
-import {RequestStatusType, setErrorAC, setRequestStatusAC} from '../../app/app-reducer';
-import {RootActionsType} from '../../app/store';
-import {addTaskAC} from './tasks-reducer';
+import {RequestStatusType, setRequestStatusAC} from '../../app/app-reducer';
+import {AppDispatchType, RootActionsType} from '../../app/store';
+import {fetchTasksTC} from './tasks-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
 
@@ -23,19 +23,28 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) =>
 export const setTodolistsAC = (todolists: TodolistType[]) =>
     ({type: 'SET-TODOS', todolists: todolists}) as const
 
+export const clearTodosDataAC = () =>
+    ({type: 'CLEAR-TODOS-DATA'}) as const
+
 export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestStatusType) =>
     ({type: 'SET-ENTITY-STATUS', id, entityStatus}) as const
 
 //THUNK =============================
-export const fetchTodolistsTC = () => (dispatch: Dispatch<RootActionsType>) => {
+export const fetchTodolistsTC = () => (dispatch: AppDispatchType) => {
     dispatch(setRequestStatusAC('loading'))
     todolistsAPI.getTodolists()
         .then(res => {
             dispatch(setTodolistsAC(res.data))
             dispatch(setRequestStatusAC('succeeded'))
+            return res.data //возврат тудулистов , для того чтобы только после их получения
+            //делать запрос на таски  ( из-за баги с занулением тасок )
         })
+        .then(todos => todos //получаем тудулисты, для каждого по id тянем таски с сервера
+            .map(tl => dispatch(fetchTasksTC(tl.id)))
+        )
         .catch(e => handleServerNetworkError(e, dispatch))
 }
+
 export const deleteTodolistTC = (todolistId: string) => (dispatch: Dispatch<RootActionsType>) => {
     dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
     dispatch(setRequestStatusAC('loading'))
@@ -94,6 +103,8 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
         case 'SET-ENTITY-STATUS':
             return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
+        case 'CLEAR-TODOS-DATA':
+            return []
         default:
             return state;
     }
@@ -106,6 +117,7 @@ export type TodolistActionsType = ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof changeTodolistFilterAC>
     | ReturnType<typeof setTodolistsAC>
     | ReturnType<typeof changeTodolistEntityStatusAC>
+    | ReturnType<typeof clearTodosDataAC>
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {

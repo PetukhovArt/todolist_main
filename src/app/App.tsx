@@ -45,15 +45,17 @@ function App() {
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                    {isLoggedIn? <Button onClick={logoutHandler} color="inherit">Logout</Button> : null}
+                <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <Menu/>
+                        </IconButton>
+                        {/*<Typography variant="h6">*/}
+                        {/*    News*/}
+                        {/*</Typography>*/}
+                    <div>
+                        {!isLoggedIn && <Button color="inherit">Login</Button>}
+                        {isLoggedIn && <Button onClick={logoutHandler} color="inherit">Logout</Button>}
+                    </div>
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
