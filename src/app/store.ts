@@ -1,10 +1,9 @@
-import {TasksActionsType, tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {TodolistActionsType, todolistsReducer} from '../features/TodolistsList/todolists-reducer';
-import {AnyAction, applyMiddleware, combineReducers, createStore, legacy_createStore} from 'redux';
-import thunk, {ThunkDispatch} from 'redux-thunk';
-import {useDispatch} from 'react-redux';
-import {AppActionsType, appReducer} from './app-reducer';
-import {AuthActionsType, authReducer} from '../features/Login/auth-reducer';
+import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
+import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
+import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux'
+import thunkMiddleware, { ThunkAction, ThunkDispatch } from 'redux-thunk'
+import {appReducer} from './app-reducer'
+import {authReducer} from '../features/Login/auth-reducer'
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -14,16 +13,16 @@ const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer
 })
-
-export type AppDispatchType = ThunkDispatch<AppRootStateType, any, AnyAction>
-export const useAppDispatch=()=> useDispatch<AppDispatchType>()
-
 // непосредственно создаём store
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
-export type RootActionsType = TodolistActionsType | AppActionsType | TasksActionsType | AuthActionsType
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
+
+// export type AppDispatch = typeof store.dispatch
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>
+
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
