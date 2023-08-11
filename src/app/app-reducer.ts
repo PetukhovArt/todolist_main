@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
-import { authAPI } from "../api/todolists-api";
-import { setIsLoggedInAC } from "../features/Login/auth-reducer";
+import { authAPI } from "api/todolists-api";
+import { setIsLoggedInAC } from "features/Login/auth-reducer";
 
 const initialState: InitialStateType = {
   status: "idle",
@@ -26,11 +26,8 @@ export const appReducer = (
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 export type InitialStateType = {
-  // происходит ли сейчас взаимодействие с сервером
   status: RequestStatusType;
-  // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
   error: string | null;
-  // true когда приложение проинициализировалось (проверили юзера, настройки получили и т.д.)
   isInitialized: boolean;
 };
 

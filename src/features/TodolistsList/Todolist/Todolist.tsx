@@ -9,6 +9,7 @@ import { useAppDispatch } from "hooks/useAppDispatch";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { Delete } from "@mui/icons-material";
+import s from "./todolist.module.css";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -30,8 +31,7 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
     if (demo) {
       return;
     }
-    const thunk = fetchTasksTC(props.todolist.id);
-    dispatch(thunk);
+    dispatch(fetchTasksTC(props.todolist.id));
   }, []);
 
   const addTask = useCallback(
@@ -74,13 +74,11 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
   }
 
   return (
-    <div>
-      <h3>
-        <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle} />
-        <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === "loading"}>
-          <Delete />
-        </IconButton>
-      </h3>
+    <div className={s.main}>
+      <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle} />
+      <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === "loading"}>
+        <Delete />
+      </IconButton>
       <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === "loading"} />
       <div>
         {tasksForTodolist.map((t) => (
@@ -94,27 +92,30 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
           />
         ))}
       </div>
-      <div style={{ paddingTop: "10px" }}>
+      <div className={s.buttonWrapper}>
         <Button
-          variant={props.todolist.filter === "all" ? "outlined" : "text"}
+          variant={props.todolist.filter === "all" ? "contained" : "text"}
           onClick={onAllClickHandler}
           color={"inherit"}
+          sx={{ width: "45px" }}
         >
           All
         </Button>
         <Button
-          variant={props.todolist.filter === "active" ? "outlined" : "text"}
+          variant={props.todolist.filter === "active" ? "contained" : "text"}
           onClick={onActiveClickHandler}
           color={"primary"}
+          sx={{ width: "45px" }}
         >
           Active
         </Button>
         <Button
-          variant={props.todolist.filter === "completed" ? "outlined" : "text"}
+          variant={props.todolist.filter === "completed" ? "contained" : "text"}
           onClick={onCompletedClickHandler}
           color={"secondary"}
+          sx={{ width: "45px" }}
         >
-          Completed
+          Done
         </Button>
       </div>
     </div>

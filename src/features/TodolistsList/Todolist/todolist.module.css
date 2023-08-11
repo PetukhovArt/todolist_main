@@ -1,0 +1,10 @@
+.main {
+    position: relative;
+}
+
+.buttonWrapper {
+    display: flex;
+    gap: 2px;
+    padding-top: 10px;
+}
+
