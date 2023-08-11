@@ -1,5 +1,6 @@
 {
   "name": "todolist",
+  "homepage": "https://PetukhovArt.github.io/todolist_main",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
@@ -13,6 +14,7 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.12",
+    "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
@@ -23,9 +25,12 @@
     "@types/uuid": "^9.0.1",
     "axios": "^1.3.4",
     "formik": "^2.2.9",
+    "gh": "^2.8.9",
+    "gh-pages": "^6.0.0",
+    "pages": "^0.0.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
+    "react-redux": "^8.1.2",
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
@@ -37,7 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"

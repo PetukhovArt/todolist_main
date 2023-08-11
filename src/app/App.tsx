@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import "./App.css";
 import { TodolistsList } from "features/TodolistsList/TodolistsList";
-import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootStateType } from "./store";
 import { initializeAppTC, RequestStatusType } from "./app-reducer";
@@ -16,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
 import Menu from "@mui/icons-material/Menu";
+import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
 
 type PropsType = {
   demo?: boolean;
