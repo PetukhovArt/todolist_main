@@ -9,16 +9,11 @@ import {
   TaskType,
   todolistsAPI,
   UpdateTaskModelType,
-} from "../../api/todolists-api";
+} from "api/todolists-api";
 import { Dispatch } from "redux";
-import { AppRootStateType } from "../../app/store";
-import {
-  setAppErrorAC,
-  SetAppErrorActionType,
-  setAppStatusAC,
-  SetAppStatusActionType,
-} from "../../app/app-reducer";
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import { AppRootStateType } from "app/store";
+import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "app/app-reducer";
+import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 
 const initialState: TasksStateType = {};
 
@@ -30,7 +25,7 @@ export const tasksReducer = (
     case "REMOVE-TASK":
       return {
         ...state,
-        [action.todolistId]: state[action.todolistId].filter((t) => t.id != action.taskId),
+        [action.todolistId]: state[action.todolistId].filter((t) => t.id !== action.taskId),
       };
     case "ADD-TASK":
       return {

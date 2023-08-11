@@ -1,13 +1,13 @@
-import { todolistsAPI, TodolistType } from "../../api/todolists-api";
+import { todolistsAPI, TodolistType } from "api/todolists-api";
 import { Dispatch } from "redux";
 import {
   RequestStatusType,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
-} from "../../app/app-reducer";
-import { handleServerNetworkError } from "../../utils/error-utils";
-import { AppThunk } from "../../app/store";
+} from "app/app-reducer";
+import { handleServerNetworkError } from "utils/error-utils";
+import { AppThunk } from "app/store";
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -17,7 +17,7 @@ export const todolistsReducer = (
 ): Array<TodolistDomainType> => {
   switch (action.type) {
     case "REMOVE-TODOLIST":
-      return state.filter((tl) => tl.id != action.id);
+      return state.filter((tl) => tl.id !== action.id);
     case "ADD-TODOLIST":
       return [{ ...action.todolist, filter: "all", entityStatus: "idle" }, ...state];
 
