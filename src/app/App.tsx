@@ -1,3 +1,6 @@
+import { ErrorBar } from "@/components/ErrorBar/ErrorBar"
+import { Login } from "@/features/Login/Login"
+import { TodolistsList } from "@/features/TodolistsList/TodolistsList"
 import Menu from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
 import Container from "@mui/material/Container"
@@ -6,10 +9,6 @@ import Toolbar from "@mui/material/Toolbar"
 
 import React from "react"
 import { Route, Routes } from "react-router-dom"
-import { TodolistsList } from "@/features/TodolistsList/TodolistsList"
-import { Login } from "@/features/Login/Login"
-import { ErrorBar } from "@/components/ErrorBar/ErrorBar"
-import "./App.css"
 
 type PropsType = {
    demo?: boolean

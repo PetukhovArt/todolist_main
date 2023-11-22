@@ -4,5 +4,7 @@
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="Stylelint" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="TsLint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UpdateDependencyToLatestVersion" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="com.haulmont.rcb.ExhaustiveDepsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>
