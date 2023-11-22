@@ -1,3 +1,33 @@
 {
-  "printWidth": 100
+   "printWidth": 110,
+   "tabWidth": 3,
+   "trailingComma": "all",
+   "bracketSameLine": true,
+   "bracketSpacing": true,
+   "jsxBracketSameLine": false,
+   "semi": false,
+   "singleQuote": false,
+   "quoteProps": "as-needed",
+   "jsxSingleQuote": false,
+   "arrowParens": "always",
+   "endOfLine": "auto",
+   "embeddedLanguageFormatting": "auto",
+   "vueIndentScriptAndStyle": true,
+   "overrides": [
+      {
+         "files": "{**/*,*}.{css,scss,sass,less,js,jsx,ts,tsx,json,md,mdx}",
+         "excludeFiles": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/coverage/**",
+            "**/public/**",
+            "**/*.d.ts",
+            "**/deployment/**"
+         ],
+         "options": {
+            "requirePragma": false
+         }
+      }
+   ]
 }

@@ -1,0 +1,17 @@
+{
+   "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-standard-scss",
+      "stylelint-config-clean-order",
+      "stylelint-config-prettier"
+   ],
+   "rules": {
+      "selector-pseudo-class-no-unknown": [
+         true,
+         {
+            "ignorePseudoClasses": ["global"]
+         }
+      ],
+      "selector-class-pattern": null
+   }
+}
